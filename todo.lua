@@ -15,6 +15,17 @@ local function view_tasks()
     end
 end
 
+local function save_tasks()
+    local file = io.open("tasks.lua", "w")
+    file:write("return {\n")
+    for _, task in ipairs(tasklist) do
+        file:write(string.format("  { id = %d, content = %q, status = %q, due_date = %q },\n",
+            task.id, task.content, task.status, task.due_date))
+    end
+    file:write("}\n")
+    file:close()
+end
+
 local function add_task(content, status, due_date)
     local new_task = {
         id = #tasklist + 1,
@@ -48,17 +59,6 @@ local function delete_task(id)
     else
         print("task not found.")
     end
-end
-
-local function save_tasks()
-    local file = io.open("tasks.lua", "w")
-    file:write("return {\n")
-    for _, task in ipairs(tasklist) do
-        file:write(string.format("  { id = %d, content = %q, status = %q, due_date = %q },\n",
-            task.id, task.content, task.status, task.due_date))
-    end
-    file:write("}\n")
-    file:close()
 end
 
 local function load_tasks()
